@@ -1,7 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class AnimatedScreen extends StatefulWidget {
-   
   const AnimatedScreen({Key? key}) : super(key: key);
 
   @override
@@ -14,6 +15,15 @@ class _AnimatedScreenState extends State<AnimatedScreen> {
   Color _color = Colors.indigo;
   BorderRadiusGeometry _borderRadius = BorderRadius.circular(10);
 
+  void changeShape() {
+    final random = Random();
+    _width  = random.nextInt(300).toDouble() + 70;
+    _heigth = random.nextInt(300).toDouble() + 70;
+    _color = Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), 1);
+    _borderRadius = BorderRadius.circular(random.nextInt(100).toDouble() + 10);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,18 +31,20 @@ class _AnimatedScreenState extends State<AnimatedScreen> {
         title: const Text('Animated Container'),
       ),
       body: Center(
-        child: Container(
+        child: AnimatedContainer(
           width: _width,
           height: _heigth,
-          decoration: BoxDecoration(
-              color: _color,
-              borderRadius: _borderRadius
-          ),
+          decoration: BoxDecoration(color: _color, borderRadius: _borderRadius), 
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOut,
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {  },
-        child: const Icon(Icons.play_circle_outline),
+        onPressed: changeShape,
+        child: const Icon(
+          Icons.play_circle_outline,
+          size: 35,
+        ),
       ),
     );
   }
